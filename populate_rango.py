@@ -1,15 +1,10 @@
 import os
-
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tango_with_django_project.settings')
-
 import django
 django.setup()
 from rango.models import Category, Page
-
-
-
 def populate():
-
+    
     # First, we will create lists of dictionaries containing the pages
     # we want to add into each category.
     # Then we will create a dictionary of dictionaries for our categories.
@@ -17,43 +12,49 @@ def populate():
     # through each data structure, and add the data to our models.
 
     python_pages = [
-    {'title': 'Official Python Tutorial',
-    'url':'http://docs.python.org/3/tutorial/'},
+    {'title':'Official Python Tutorial',
+    'url':'http://docs.python.org/3/tutorial/',
+    'views':500},
     {'title':'How to Think like a Computer Scientist',
-    'url':'http://www.greenteapress.com/thinkpython/'},
+    'url':'http://www.greenteapress.com/thinkpython/',
+    'views':100},
     {'title':'Learn Python in 10 Minutes',
-    'url':'http://www.korokithakis.net/tutorials/python/'} ]
+    'url':'http://www.korokithakis.net/tutorials/python/',
+    'views':400} ]
 
     django_pages = [
         {'title':'Official Django Tutorial',
-        'url':'https://docs.djangoproject.com/en/2.1/intro/tutorial01/'},
+        'url':'https://docs.djangoproject.com/en/2.1/intro/tutorial01/',
+        'views':20},
         {'title':'Django Rocks',
-        'url':'http://www.djangorocks.com/'},
+        'url':'http://www.djangorocks.com/',
+        'views':2},
         {'title':'How to Tango with Django',
-        'url':'http://www.tangowithdjango.com/'} ]
+        'url':'http://www.tangowithdjango.com/',
+        'views':300} ]
 
     other_pages = [
         {'title':'Bottle',
-        'url':'http://bottlepy.org/docs/dev/'},
+        'url':'http://bottlepy.org/docs/dev/',
+        'views':24},
         {'title':'Flask',
-        'url':'http://flask.pocoo.org'} ]
+        'url':'http://flask.pocoo.org',
+        'views':200} ]
 
     cats = {'Python': {'pages': python_pages, 'views':128, 'likes':64 },
     'Django': {'pages': django_pages , 'views':64, 'likes':32 },
     'Other Frameworks': {'pages': other_pages ,'views':32, 'likes':16 } }
-
     # If you want to add more categories or pages,
     # add them to the dictionaries above.
-
     # The code below goes through the cats dictionary, then adds each category,
     # and then adds all the associated pages for that category.
-
+    
     for cat, cat_data in cats.items():
         views = cat_data['views']
         likes = cat_data['likes']
         c = add_cat(cat, views, likes)
         for p in cat_data['pages']:
-            add_page(c, p['title'], p['url'])
+            add_page(c, p['title'], p['url'], p['views'])
 
     # Print out the categories we have added.
     for c in Category.objects.all():
